@@ -33,7 +33,7 @@ class FigureXY2(Figure):
     def __str__(self):
         return 'v_draw'
 
-    def _draw(self):
+    def draw(self):
         pass
 
     def add_draw(self,command):
@@ -57,7 +57,7 @@ class FigureXY2(Figure):
         if self._y2:
             self._axy2.plot([],[],color='tab:red')
             self._axy2.set_ylim(0,1)
-        self._draw()
+        self.draw()
 
     #if x negative i start from 1.02xmin, if x positive I start from 0
     #0.98 is here if I don't want to use 0 as reference
@@ -83,7 +83,7 @@ class FigureXY2(Figure):
 
             if len(self._axy2.lines)!=0:
                 self._axy2.lines[-1].set_ydata(y2)
-        self._draw()
+        self.draw()
 
     #appends and then plots data
     def append_plot_data(self,x,y,y2):
@@ -101,7 +101,7 @@ class FigureXY2(Figure):
         else:
             self.plot_data(x,y)
 
-        self._draw()
+        self.draw()
     #clears the whole graph
     def clear_graph(self):
         while (len(self._axy.lines)):
@@ -123,7 +123,7 @@ class FigureXY2(Figure):
             if len(self._axy2.lines)!=0:
                 y2=self._axy2.lines[-1].get_ydata()
                 self._axy2.lines[-1].set_ydata(y2[:-1])
-        self._draw()
+        self.draw()
 
     #updates labels
     def update_labels(self,*args,**kwargs):
@@ -143,5 +143,4 @@ class FigureXY2(Figure):
             if 'y2' in kwargs and self._y2:
                 self._update_y2_label(kwargs['y2'])
             return
-        self._draw()
-
+        self.draw()
