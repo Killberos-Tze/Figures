@@ -83,15 +83,39 @@ class FigureXY2(Figure):
                 self._axy2.lines[-1].set_ydata(y2)
         self.canvasdraw()
 
+    def clear_loaded_curves(self):
+        while len(self._axy.lines)!=0:
+            self._axy.lines[-1].remove()
+        self._axy.set_xlim(0,1)
+        self._axy.set_ylim(0,1)
 
     def plot_loaded_curves(self,datalist=[],masklist=[]):#datalist is list of datadictionaries masklist is a list of checkboxes states
+        self.clear_loaded_curves()
         if len(datalist)==len(masklist) and len(datalist)!=0:
+            xmin=[]
+            xmax=[]
+            ymin=[]
+            ymax=[]
+            handles=[]
             self._axy.set_prop_cycle(None)
             for idx,item in enumerate(masklist):
                 if item == 'on':
-                    self._axy.plot(datalist[idx]['#data_table'][:,0],datalist[idx]['#data_table'][:,1])
+                    x=datalist[idx]['#data_table'][:,0]
+                    y=datalist[idx]['#data_table'][:,1]
+                    xmin.append(npmin(x))
+                    xmax.append(npmax(x))
+                    ymin.append(self._find_min(y))
+                    ymax.append(self._find_max(y))
+                    self._axy.set_xlim(min(xmin),max(xmax))
+                    self._axy.set_ylim(min(ymin),max(ymax))
+                    tmp,=self._axy.plot(x,y,label=f'{idx}')
+                    handles.append(tmp)
                 elif item == 'off':
                     self._axy.plot([],[])
+            self._axy.legend(handles=handles,loc=4)
+            self.canvasdraw()
+            
+#multpiple legends add_artist (old legend)
 
     #appends and then plots data
     def append_plot_data(self,x,y,y2):
