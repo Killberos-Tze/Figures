@@ -13,10 +13,10 @@ from numpy import append as npappend
 
 #figure with of without linked right axes
 class FigureXY2(Figure):
-    def __init__(self,y2=False,**kwargs):
+    def __init__(self,y2=False,figsize=(11/2.54,8/2.54),axsize=[2/11,2/11,7/11,5/8],**kwargs):
         super().__init__(**kwargs)
-        self.set_size_inches((11/2.54,8/2.54))
-        self._axy=self.add_axes([2/11,2/11,7/11,5/8])
+        self.set_size_inches(figsize)
+        self._axy=self.add_axes(axsize)
         self._axy.tick_params(labelsize=8)
 
         self._y2=y2
@@ -83,36 +83,38 @@ class FigureXY2(Figure):
                 self._axy2.lines[-1].set_ydata(y2)
         self.canvasdraw()
 
-    def clear_loaded_curves(self):
+    def clear_xy_curves(self):
         while len(self._axy.lines)!=0:
             self._axy.lines[-1].remove()
         self._axy.set_xlim(0,1)
         self._axy.set_ylim(0,1)
 
-    def plot_loaded_curves(self,datalist=[],masklist=[]):#datalist is list of datadictionaries masklist is a list of checkboxes states
-        self.clear_loaded_curves()
+    def plot_xy_curves(self,datalist={},masklist={}):#datalist is list of datadictionaries masklist is a list of checkboxes states
+        self.clear_xy_curves()
         if len(datalist)==len(masklist) and len(datalist)!=0:
             xmin=[]
             xmax=[]
             ymin=[]
-            ymax=[]
+            ymax=[1]
             handles=[]
             self._axy.set_prop_cycle(None)
-            for idx,item in enumerate(masklist):
-                if item == 'on':
-                    x=datalist[idx]['#data_table'][:,0]
-                    y=datalist[idx]['#data_table'][:,1]
+            for key in masklist.keys():
+                if masklist[key].get_state() == 'on':
+                    x=datalist[key]['#data_table'][:,datalist[key]['#data_summary']['x1_col']]
+                    y=datalist[key]['#data_table'][:,datalist[key]['#data_summary']['y1_col']]
                     xmin.append(npmin(x))
                     xmax.append(npmax(x))
                     ymin.append(self._find_min(y))
                     ymax.append(self._find_max(y))
                     self._axy.set_xlim(min(xmin),max(xmax))
                     self._axy.set_ylim(min(ymin),max(ymax))
-                    tmp,=self._axy.plot(x,y,label=f'{idx}')
+                    tmp,=self._axy.plot(x,y,label=datalist[key]["#data_summary"]["y1_label"])
                     handles.append(tmp)
-                elif item == 'off':
+                    self._update_x_label(datalist[key]['#data_summary']['x1_name']+' '+'('+datalist[key]['#data_summary']['x1_prefix']+datalist[key]['#data_summary']['x1_unit']+')')
+                elif masklist[key].get_state() == 'off':
                     self._axy.plot([],[])
-            self._axy.legend(handles=handles,loc=4)
+            self._axy.legend(handles=handles,loc=(1,0))
+            
             self.canvasdraw()
             
 #multpiple legends add_artist (old legend)
