@@ -209,8 +209,14 @@ class FigureLineMap(Figure):
     def _update_x_label(self,xname):
         self._axy.set_xlabel(xname,fontsize=10, position=(0.5,0),labelpad=5)
 
+    def _update_x2_label(self,xname):
+        self._axy2.set_xlabel(xname,fontsize=10, position=(0.5,0),labelpad=5)
+
     def _update_y_label(self,yname):
         self._axy.set_ylabel(yname,fontsize=10, position=(0.5,0),labelpad=5)
+
+    def _update_y2_label(self,yname):
+        self._axy2.set_ylabel(yname,fontsize=10, position=(0.5,0),labelpad=5)
 
     def plot_absorbance(self,R,T,A):
         self.clear_absorbance()
@@ -250,6 +256,8 @@ class FigureLineMap(Figure):
         tmp,=self._axy2.plot(xa,ya,label=labela,color='red')
         handles2.append(tmp)
         self._axy2.legend(handles=handles2,loc=(1,0))
+        self._update_x2_label(A['#data_summary']['x1_name']+' ('+A['#data_summary']['x1_prefix']+A['#data_summary']['x1_unit']+')')
+        self._update_x_label(A['#data_summary']['x1_name']+' ('+A['#data_summary']['x1_prefix']+A['#data_summary']['x1_unit']+')')
         self.canvasdraw()
 
     def clear_absorbance(self):
