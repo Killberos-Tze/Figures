@@ -33,7 +33,6 @@ class FigureXY2(Figure):
     def __str__(self):
         return 'v_draw'
 
-    
     def add_canvas(self,canvas):
         self.canvas=canvas
         self.canvasdraw=self.canvas.draw
@@ -87,13 +86,17 @@ class FigureXY2(Figure):
         self.canvasdraw()
 
     def clear_xy_curves(self):
+        tmp=self._axy.get_legend()
+        if tmp:
+            tmp.remove()
         while len(self._axy.lines)!=0:
             self._axy.lines[-1].remove()
         self._axy.set_xlim(0,1)
         self._axy.set_ylim(0,1)
+        self.canvasdraw()
 
     #plots xy sets of data that can be masked (masking assumes that you are sending either checkbox of on/off button reference)
-    def plot_xy_curves(self,datalist={},masklist={}):#datalist is list of datadictionaries masklist is a list of checkboxe references
+    def plot_xy_dict(self,datalist={},masklist={}):#datalist is list of datadictionaries masklist is a list of checkboxe references
         self.clear_xy_curves()
         if len(datalist)==len(masklist) and len(datalist)!=0:
             xmin=[]
@@ -117,10 +120,50 @@ class FigureXY2(Figure):
                     self._update_x_label(datalist[key]['#data_summary']['x1_name']+' '+'('+datalist[key]['#data_summary']['x1_prefix']+datalist[key]['#data_summary']['x1_unit']+')')
                 elif masklist[key].get_state() == 'off':
                     self._axy.plot([],[])
-            self._axy.legend(handles=handles,loc=(1,0))
-            
+            if len(handles):
+                self._axy.legend(handles=handles,loc=(1,0))
             self.canvasdraw()
-            
+
+    def plot_xy_lists(self,datalist=[],masklist=[]):#datalist is list of datadictionaries masklist is a list of checkboxe references
+        self.clear_xy_curves()
+        if len(datalist)==len(masklist) and len(datalist)!=0:
+            xmin=[]
+            xmax=[]
+            ymin=[]
+            ymax=[1]
+            handles=[]
+            self._axy.set_prop_cycle(None)
+            for key,item in enumerate(masklist):
+                if item.is_enabled() == False:
+                    x=datalist[key]['#data_table'][:,datalist[key]['#data_summary']['x1_col']]
+                    y=datalist[key]['#data_table'][:,datalist[key]['#data_summary']['y1_col']]
+                    xmin.append(npmin(x))
+                    xmax.append(npmax(x))
+                    ymin.append(self._find_min(y))
+                    ymax.append(self._find_max(y))
+                    self._axy.set_xlim(min(xmin),max(xmax))
+                    self._axy.set_ylim(min(ymin),max(ymax))
+                    tmp,=self._axy.plot(x,y,label=datalist[key]["#data_summary"]["y1_label"],linestyle=(0, (5, 10)))
+                    handles.append(tmp)
+                    self._update_x_label(datalist[key]['#data_summary']['x1_name']+' '+'('+datalist[key]['#data_summary']['x1_prefix']+datalist[key]['#data_summary']['x1_unit']+')')
+                elif item.get_state() == 'on':
+                    x=datalist[key]['#data_table'][:,datalist[key]['#data_summary']['x1_col']]
+                    y=datalist[key]['#data_table'][:,datalist[key]['#data_summary']['y1_col']]
+                    xmin.append(npmin(x))
+                    xmax.append(npmax(x))
+                    ymin.append(self._find_min(y))
+                    ymax.append(self._find_max(y))
+                    self._axy.set_xlim(min(xmin),max(xmax))
+                    self._axy.set_ylim(min(ymin),max(ymax))
+                    tmp,=self._axy.plot(x,y,label=datalist[key]["#data_summary"]["y1_label"])
+                    handles.append(tmp)
+                    self._update_x_label(datalist[key]['#data_summary']['x1_name']+' '+'('+datalist[key]['#data_summary']['x1_prefix']+datalist[key]['#data_summary']['x1_unit']+')')
+                elif masklist[key].get_state() == 'off':
+                    self._axy.plot([],[])
+            if len(handles):
+                self._axy.legend(handles=handles,loc=(1,0))
+            self.canvasdraw()
+
 #multpiple legends add_artist (old legend)
 
     #appends and then plots data
