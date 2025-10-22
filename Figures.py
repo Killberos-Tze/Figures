@@ -18,7 +18,7 @@ class FigureXY2(Figure):
         self.set_size_inches(figsize)
         self._axy=self.add_axes(axsize)
         self._axy.tick_params(labelsize=8)
-
+        self._axy.grid(color='lightgray', which='major', axis='both')
         self._y2=y2
 
         if self._y2:
@@ -239,8 +239,10 @@ class FigureLineMap(Figure):
         spacing=1.5
         self._axy=self.add_axes((axx0/xdim,axy0/ydim,axx/xdim,axy/ydim))
         self._axy.tick_params(labelsize=8)
+        self._axy.grid(color='lightgray', which='major', axis='both')
         self._axy2=self.add_axes([axx0/xdim,(axy0+axy+spacing)/ydim,axx/xdim,axy/ydim])
         self._axy2.tick_params(labelsize=8)
+        self._axy2.grid(color='lightgray', which='major', axis='both')
 
     def __str__(self):
         return 'v_draw'
