@@ -96,7 +96,7 @@ class FigureXY2(Figure):
         self.canvasdraw()
 
     #plots xy sets of data that can be masked (masking assumes that you are sending either checkbox of on/off button reference)
-    def plot_xy_dict(self,datalist={},masklist={}):#datalist is list of datadictionaries masklist is a list of checkboxe references
+    def plot_xy_dict(self,datalist={},masklist={}):#datalist is dictionary of datadictionaries masklist is a dictionary of checkboxe references
         self.clear_xy_curves()
         if len(datalist)==len(masklist) and len(datalist)!=0:
             xmin=[]
