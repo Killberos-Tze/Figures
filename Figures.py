@@ -26,7 +26,9 @@ class FigureXY2(Figure):
             self._axy2=self._axy.twinx()
             self._axy2.tick_params(labelsize=8)
             self._axy.tick_params(axis='y',labelcolor='tab:blue')
+            self._axy.grid(color="tab:blue",ls='--',which='major', axis='y')
             self._axy2.tick_params(axis='y',labelcolor='tab:red')
+            self._axy2.grid(color="tab:red",ls=':',which='major', axis='y')
 
         self._init_figure()
 
@@ -70,7 +72,7 @@ class FigureXY2(Figure):
 
     #not private
     #plots the data it receives (appending should be done in main if needed)
-    def plot_measured_data(self,x,y,y2=None):#x, y, y2 are just numpy arrays
+    def plot_data(self,x,y,y2=None):#x, y, y2 are just numpy arrays
         if len(x)==len(y):
             self._axy.set_xlim(self._find_min(x),self._find_max(x))
             self._axy.set_ylim(self._find_min(y),self._find_max(y))
@@ -167,7 +169,7 @@ class FigureXY2(Figure):
 #multpiple legends add_artist (old legend)
 
     #appends and then plots data
-    def append_plot_data(self,x,y,y2):
+    def append_plot_data(self,x,y,y2=None):
         if len(self._axy.lines)!=0:
             xold=self._axy.lines[-1].get_xdata()
             yold=self._axy.lines[-1].get_ydata()
@@ -224,6 +226,10 @@ class FigureXY2(Figure):
             if 'y2' in kwargs and self._y2:
                 self._update_y2_label(kwargs['y2'])
             return
+        self.canvasdraw()
+
+    def set_x_grid_lines(self,num):
+        self._axy.locator_params(axis='x', nbins=num)
         self.canvasdraw()
 
 class FigureLineMap(Figure):
