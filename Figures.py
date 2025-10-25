@@ -86,7 +86,7 @@ class FigureXY2(Figure):
 
     #not private
     #plots the data it receives (appending should be done in main if needed)
-    def plot_data(self,x,y,y2=None):#x, y, y2 are just numpy arrays
+    def plot_data(self,x,y,y2=nparray([])):#x, y, y2 are just numpy arrays
         self._init_plots()
         if len(x)==len(y):
             if x!=nparray([]):
@@ -95,10 +95,11 @@ class FigureXY2(Figure):
                 self._axy.set_ylim(self._find_min(y),self._find_max(y))
             self._axy.lines[-1].set_xdata(x)
             self._axy.lines[-1].set_ydata(y)
-            if self._y2:
-                if len(x)==len(y2):
+        if self._y2:
+            if len(x)==len(y2):
+                if y2!=nparray([]):
                     self._axy2.set_ylim(self._find_min(y2),self._find_max(y2))
-            self._axy2.lines[-1].set_ydata(y2)
+                self._axy2.lines[-1].set_ydata(y2)
         self.canvasdraw()
 
 #appends and then plots data
