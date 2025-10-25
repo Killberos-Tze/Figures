@@ -89,8 +89,10 @@ class FigureXY2(Figure):
     def plot_data(self,x,y,y2=None):#x, y, y2 are just numpy arrays
         self._init_plots()
         if len(x)==len(y):
-            self._axy.set_xlim(self._find_min(x),self._find_max(x))
-            self._axy.set_ylim(self._find_min(y),self._find_max(y))
+            if x!=nparray([]):
+                self._axy.set_xlim(self._find_min(x),self._find_max(x))
+            if y!=nparray([]):
+                self._axy.set_ylim(self._find_min(y),self._find_max(y))
             self._axy.lines[-1].set_xdata(x)
             self._axy.lines[-1].set_ydata(y)
             if self._y2:
