@@ -78,13 +78,18 @@ class FigureXY2(Figure):
                 self._axy2.lines[-1].remove()
     #if x negative i start from 1.02xmin, if x positive I start from 0
     #0.98 is here if I don't want to use 0 as reference
-    def _find_min(self,x):
-        return min([0,1.02*(npmin(x)),0.98*(npmin(x))])
+    def _find_min(self,x,zero=False):
+        if zero:
+            return min([0,1.02*(npmin(x)),0.98*(npmin(x))])
+        else:
+            return min([1.02*(npmin(x)),0.98*(npmin(x))])
     #if x negative I start from 0, if x positive I end up with 1.02xmax
     #0.98 is here if I don't want to use 0 as reference
-    def _find_max(self,x):
-        return max([0,1.02*(npmax(x)),0.98*(npmax(x))])
-
+    def _find_max(self,x,zero=False):
+        if zero:
+            return max([0,1.02*(npmax(x)),0.98*(npmax(x))])
+        else:
+            return max([1.02*(npmax(x)),0.98*(npmax(x))])
     #not private
     #plots the data it receives (appending should be done in main if needed)
     def plot_data(self,x,y,y2=nparray([])):#x, y, y2 are just numpy arrays
