@@ -78,7 +78,7 @@ class FigureXY2(Figure):
                 self._axy2.lines[-1].remove()
     #if x negative i start from 1.02xmin, if x positive I start from 0
     #0.98 is here if I don't want to use 0 as reference
-    def _find_min(self,x,zero=False):
+    def _find_min(self,x,zero=True):
         if zero:
             return min([0,1.02*(npmin(x)),0.98*(npmin(x))])
         else:
