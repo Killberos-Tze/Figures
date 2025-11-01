@@ -85,26 +85,32 @@ class FigureXY2(Figure):
             return min([1.02*(npmin(x)),0.98*(npmin(x))])
     #if x negative I start from 0, if x positive I end up with 1.02xmax
     #0.98 is here if I don't want to use 0 as reference
-    def _find_max(self,x,zero=False):
+    def _find_max(self,x,zero=True):
         if zero:
             return max([0,1.02*(npmax(x)),0.98*(npmax(x))])
         else:
             return max([1.02*(npmax(x)),0.98*(npmax(x))])
     #not private
     #plots the data it receives (appending should be done in main if needed)
-    def plot_data(self,x,y,y2=nparray([])):#x, y, y2 are just numpy arrays
+    def plot_data(self,x,y,y2=nparray([]),zero=[True,True,True],zerox=None,zeroy1=None,zeroy2=None):#x, y, y2 are just numpy arrays
+        if zerox==None:
+            zerox=zero[0]
+        if zeroy1==None:
+            zeroy1=zero[1]
+        if zeroy2==None:
+            zeroy2=zero[2]
         self._init_plots()
         if len(x)==len(y):
             if npshape(x)!=npshape(nparray([])):
-                self._axy.set_xlim(self._find_min(x),self._find_max(x))
+                self._axy.set_xlim(self._find_min(x,zerox),self._find_max(x,zerox))
             if npshape(y)!=npshape(nparray([])):
-                self._axy.set_ylim(self._find_min(y),self._find_max(y))
+                self._axy.set_ylim(self._find_min(y,zeroy1),self._find_max(y,zeroy1))
             self._axy.lines[-1].set_xdata(x)
             self._axy.lines[-1].set_ydata(y)
         if self._y2:
             if len(x)==len(y2):
                 if npshape(y2)!=npshape(nparray([])):
-                    self._axy2.set_ylim(self._find_min(y2),self._find_max(y2))
+                    self._axy2.set_ylim(self._find_min(y2,zeroy2),self._find_max(y2,zeroy2))
                 self._axy2.lines[-1].set_ydata(y2)
         self.canvasdraw()
 
@@ -170,6 +176,14 @@ class FigureXY2(Figure):
 
     def set_x_grid_lines(self,num):
         self._axy.locator_params(axis='x', nbins=num)
+        self.canvasdraw()
+
+    def set_xticks(self,ticks):
+        self._axy.set_xticks(ticks)
+        self.canvasdraw()
+
+    def set_xticklabels(self,labels):
+        self._axy.set_xticklabels(labels)
         self.canvasdraw()
 
     def clear_xy_curves(self):
