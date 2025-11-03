@@ -339,9 +339,9 @@ class FigureLineMap(Figure):
         ya=A['#data_table'][:,R['#data_summary']['y1_col']]
         labela=A["#data_summary"]["y1_label"]
 
-        tmp,=self._axy.plot(xt,yt,color='black',label=labelt)
+        tmp,=self._axy.plot(xt,yt,color='#51ff00ff',label=labelt)
         handles.append(tmp)
-        tmp,=self._axy.plot(xr,1-yr,color='blue',label=labelr)
+        tmp,=self._axy.plot(xr,1-yr,color='#0000ffff', linestyle='--',label=labelr)
         handles.append(tmp)
         tmp=self._axy.fill_between(xr,yt,1-yr,color='red',label=labela)
         handles.append(tmp)
