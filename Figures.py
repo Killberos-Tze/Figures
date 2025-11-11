@@ -280,7 +280,7 @@ class FigureXY2(Figure):
             self.canvasdraw()
 #multpiple legends add_artist (old legend)
     
-    def plot_xyy2_array_data(self,datalist=[],names=[]):
+    def plot_xyy2_array_data(self,datalist=[],names=[],labels=[]):
         self.clear_xy_curves()
         if datalist!=[]:
             xmin=[]
@@ -317,6 +317,8 @@ class FigureXY2(Figure):
                 self._axy.legend(handles=handles1,loc=(1,0))
             if len(handles2):
                 self._axy2.legend(handles=handles2,loc=(1,1))
+            if labels!=[]:
+                self.update_labels(*labels)
             self.canvasdraw()
 
 # # Using set_dashes() and set_capstyle() to modify dashing of an existing line.
