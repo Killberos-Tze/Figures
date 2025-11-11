@@ -314,7 +314,7 @@ class FigureXY2(Figure):
                 tmp,=self._axy2.plot(x,y2,label=y2name,linestyle=(0, (5, 10)),gapcolor='tab:red')
                 handles2.append(tmp)
             if len(handles1):
-                self._axy.legend(handles=handles1,loc=(1,0))
+                self._axy.legend(handles=handles1,loc=(0,1))
             if len(handles2):
                 self._axy2.legend(handles=handles2,loc=(1,1))
             if labels!=[]:
