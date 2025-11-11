@@ -316,7 +316,7 @@ class FigureXY2(Figure):
             if len(handles1):
                 self._axy.legend(handles=handles1,loc=(0,1))
             if len(handles2):
-                self._axy2.legend(handles=handles2,loc=(1,1))
+                self._axy2.legend(handles=handles2,loc=(0.6,1))
             if labels!=[]:
                 self.update_labels(*labels)
             self.canvasdraw()
