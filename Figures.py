@@ -194,6 +194,14 @@ class FigureXY2(Figure):
             self._axy.lines[-1].remove()
         self._axy.set_xlim(0,1)
         self._axy.set_ylim(0,1)
+        if self._y2:
+            tmp=self._axy2.get_legend()
+            if tmp:
+                tmp.remove()
+            while len(self._axy2.lines)!=0:
+                self._axy2.lines[-1].remove()
+            self._axy2.set_xlim(0,1)
+            self._axy2.set_ylim(0,1)
         self.canvasdraw()
 
     #plots xy sets of data that can be masked (masking assumes that you are sending either checkbox of on/off button reference)
@@ -270,8 +278,61 @@ class FigureXY2(Figure):
             if len(handles):
                 self._axy.legend(handles=handles,loc=(1,0))
             self.canvasdraw()
-
 #multpiple legends add_artist (old legend)
+    
+    def plot_xyy2_array_data(self,datalist=[],names=[]):
+        self.clear_xy_curves()
+        if datalist!=[]:
+            xmin=[]
+            xmax=[]
+            y1min=[]
+            y1max=[]
+            y2min=[]
+            y2max=[]
+            handles1=[]
+            handles2=[]
+            self._axy.set_prop_cycle(None)
+            self._axy2.set_prop_cycle(None)
+            for idx,item in enumerate(datalist):
+                x=item[:,0]
+                y1=item[:,1]
+                y2=item[:,2]
+                xmin.append(npmin(x))
+                xmax.append(npmax(x))
+                y1min.append(self._find_min(y1))
+                y1max.append(self._find_max(y1))
+                y2min.append(self._find_min(y2))
+                y2max.append(self._find_max(y2))
+                self._axy.set_xlim(min(xmin),max(xmax))
+                self._axy.set_ylim(min(y1min),max(y1max))
+                self._axy2.set_ylim(min(y2min),max(y2max))
+                if len(names)==len(datalist):
+                    y1name='n_'+names[idx]
+                    y2name='k_'+names[idx]
+                tmp,=self._axy.plot(x,y1,label=y1name,linestyle=(0, (5, 10)),gapcolor='tab:blue')
+                handles1.append(tmp)
+                tmp,=self._axy2.plot(x,y2,label=y2name,linestyle=(0, (5, 10)),gapcolor='tab:red')
+                handles2.append(tmp)
+            if len(handles1):
+                self._axy.legend(handles=handles1,loc=(1,0))
+            if len(handles2):
+                self._axy2.legend(handles=handles2,loc=(1,1))
+            self.canvasdraw()
+
+# # Using set_dashes() and set_capstyle() to modify dashing of an existing line.
+# line1, = ax.plot(x, y, label='Using set_dashes() and set_dash_capstyle()')
+# line1.set_dashes([2, 2, 10, 2])  # 2pt line, 2pt break, 10pt line, 2pt break.
+# line1.set_dash_capstyle('round')
+
+# # Using plot(..., dashes=...) to set the dashing when creating a line.
+# line2, = ax.plot(x, y - 0.2, dashes=[6, 2], label='Using the dashes parameter')
+
+# # Using plot(..., dashes=..., gapcolor=...) to set the dashing and
+# # alternating color when creating a line.
+# line3, = ax.plot(x, y - 0.4, dashes=[4, 4], gapcolor='tab:pink',
+#                  label='Using the dashes and gapcolor parameters')
+
+
 
 
 
