@@ -80,16 +80,16 @@ class FigureXY2(Figure):
     #0.98 is here if I don't want to use 0 as reference
     def _find_min(self,x,zero=True):
         if zero:
-            return min([0,1.02*(npmin(x)),0.98*(npmin(x))])
+            return min([0,1.02*(npmin(x)),0.98*(npmin(x)),npmin(x)-0.2])
         else:
-            return min([1.02*(npmin(x)),0.98*(npmin(x))])
+            return min([1.02*(npmin(x)),0.98*(npmin(x)),npmin(x)-0.2])
     #if x negative I start from 0, if x positive I end up with 1.02xmax
     #0.98 is here if I don't want to use 0 as reference
     def _find_max(self,x,zero=True):
         if zero:
-            return max([0,1.02*(npmax(x)),0.98*(npmax(x))])
+            return max([0,1.02*(npmax(x)),0.98*(npmax(x)),npmax(x)+0.2])
         else:
-            return max([1.02*(npmax(x)),0.98*(npmax(x))])
+            return max([1.02*(npmax(x)),0.98*(npmax(x)),npmax(x)+0.2])
     #not private
     #plots the data it receives (appending should be done in main if needed)
     def plot_data(self,x,y,y2=nparray([]),zero=[True,True,True],zerox=None,zeroy1=None,zeroy2=None):#x, y, y2 are just numpy arrays
