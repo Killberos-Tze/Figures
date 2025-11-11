@@ -299,9 +299,9 @@ class FigureXY2(Figure):
                 y2=item[:,2]
                 xmin.append(npmin(x))
                 xmax.append(npmax(x))
-                y1min.append(self._find_min(y1),zero=False)
+                y1min.append(self._find_min(y1,zero=False))
                 y1max.append(self._find_max(y1))
-                y2min.append(self._find_min(y2),zero=False)
+                y2min.append(self._find_min(y2,zero=False))
                 y2max.append(self._find_max(y2))
                 self._axy.set_xlim(min(xmin),max(xmax))
                 self._axy.set_ylim(min(y1min),max(y1max))
